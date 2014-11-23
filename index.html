@@ -1,0 +1,92 @@
+<!--
+Author: Francisco Santolalla Quiñonero
+Tarea2 curso JS
+
+Comentario: Jose Antonio Vacas Martinez
+No funciona en chrome. Me dice que no he seleccionado la operación cuando si que lo he hecho.
+Debes adjuntar un enlace al código para que se pueda evaluar (y buscar el error también ;) )
+
+Respuesta:
+Creo que lo puse demasiado restrictivo a la hora de realizar la operación.
+Tenía puesto que tuvieses que elegir el tipo de operación y además pulsar el botón "Tipo de operación",
+entonces se mostraba en la página el símbolo de la operación elegida, y ya te dejaba introducir los números y pulsar el botón "Calcular".
+Voy a quitarle esa restricción a la función por si era eso a lo que usted se refería.
+-->
+<html>
+  <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 	
+    <title>Calculadora Web</title>    
+    <h1 ALIGN=center>Calculadora Web</h1>
+  </head> 
+  <body> <!-- Creo el formulario a traves del cual se introduciran los datos para operar con la calculadora -->
+		<form id="miform" action="#" onsubmit ="return false">	<!-- action="#" se usa para que no se reinicie el formulario cuando se pulsa un botón -->
+			<h2 ALIGN=left><pre>                     Indique la operacion que va a realizar:</pre></h2>
+			<h2 ALIGN=center>
+			<input type="radio" name="tipo_operacion" value="Suma">Suma<br>
+			<input type="radio" name="tipo_operacion" value="Resta">Resta<br>
+			<input type="radio" name="tipo_operacion" value="Multiplicacion">Multiplicacion<br>	
+			<input type="radio" name="tipo_operacion" value="Division">Division<br>			
+			<button onClick="Elegir_tipo_operacion( );">Tipo de operacion</button>  <!-- Al pulsar el botón se llamara a una función JS-->
+			</h2>
+		<script type='application/javascript'>
+		    function Elegir_tipo_operacion( ) {  //En este metodo compruebo el tipo de operacion que desea realizar
+		    									 //Cambio dinamicamente el simbolo de la operacion elegida
+		    									 //Para ello uso los selectores getElementsByTagName y getElementById 
+		    	var tipo_oper=document.getElementsByTagName("input");
+		    	if(tipo_oper[0].checked)											//Compruebo el elemento radio que está seleccionado
+		    		document.getElementById('simbolo_operacion').innerHTML = "+";
+		    	else if(tipo_oper[1].checked)
+		    		document.getElementById('simbolo_operacion').innerHTML = "-";
+		    	else if(tipo_oper[2].checked)
+		    		document.getElementById('simbolo_operacion').innerHTML = "X";
+		    	else if(tipo_oper[3].checked)
+		    		document.getElementById('simbolo_operacion').innerHTML = "/";		
+		    	else   
+		    		alert("No ha indicado el tipo de operacion"); 	
+		    	return false;			    	
+		    }
+		</script>
+			<h2 ALIGN=left><pre>                     Introduzca los operandos:</pre></h2>	
+			<h2 ALIGN=center>Operando1: <input id="operando1" type="text" name="operando1"><br></h2>	
+			<h2 ALIGN=center id="simbolo_operacion"><br></h2>
+			<h2 ALIGN=center>Operando2: <input id="operando2" type="text" name="operando2"><br>
+			<button onClick="Calcula_operacion( );">Calcular</button></h2>	<!-- Al pulsar el botón se llamara a una función JS-->
+			<hr>
+		</form>
+			<script type='application/javascript'>
+			    function Calcula_operacion( ) {	//En esta función realizo la operacion que se le haya indicado a la calculadora
+			    								//Ahora en vez de usar el selector getElementById uso los objetos JQuery
+			    								//Así aprobecho la selección de objetos de JQuery y sus funciones
+			    	var oper1=$("#operando1");
+			    	var oper2=$("#operando2");
+			    	var tipo_elegido=$("#simbolo_operacion");
+			    	var tipo_oper=document.getElementsByTagName("input");
+			    	var result;
+			    	if(oper1.val().length == 0 || oper2.val().length == 0){			//Compruebo que se hayan introducido los dos operandos
+			    		alert("No ha introducido ambos operandos.");
+			    		return false;
+			    	}
+			    	//if(tipo_elegido.text() == "<br>"){								//Compruebo que se haya elegido algún tipo de operación
+			    	//	alert("Elija el tipo de operacion y pulse el boton Tipo de operacion.");
+			    	//	return false;
+			    	//}			    			    	
+			    	if(tipo_oper[0].checked){									//Compruebo el elemento radio que está seleccionado
+			    		result=parseFloat(oper1.val())+parseFloat(oper2.val());
+			    	}else if(tipo_oper[1].checked)
+			    		result=parseFloat(oper1.val())-parseFloat(oper2.val());
+			    	else if(tipo_oper[2].checked)
+			    		result=parseFloat(oper1.val())*parseFloat(oper2.val());
+			    	else if(tipo_oper[3].checked)
+			    		result=parseFloat(oper1.val())/parseFloat(oper2.val());	
+			    	else{ 
+			    		alert("No ha indicado el tipo de operacion");
+			    		return false;
+			    	}
+		    		document.getElementById('resultado').innerHTML = "Resultado: "+result.toString();	//Cambio dinámicamente el texto de 
+		    		return false;																		//el objeto con id="resultado"		
+			    }
+			</script>			
+			<h2 ALIGN=center id="resultado">Resultado:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>
+  </body>
+</html>
